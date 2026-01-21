@@ -1,0 +1,25 @@
+const { redirect, getBaseUrl } = require("../_util");
+
+module.exports = async (req, res) => {
+  try {
+    const clientId = process.env.DISCORD_CLIENT_ID;
+    if (!clientId) throw new Error("Missing DISCORD_CLIENT_ID");
+
+    const base = getBaseUrl(req);
+    const redirectUri = `${base}/api/auth/callback`;
+
+    // If you're using previews, Discord won't allow random preview URLs.
+    // That’s why we lock to BASE_URL (krystalclient.gg).
+    const params = new URLSearchParams({
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      response_type: "code",
+      scope: "identify"
+    });
+
+    redirect(res, `https://discord.com/api/oauth2/authorize?${params.toString()}`);
+  } catch (e) {
+    res.statusCode = 500;
+    res.end("Auth login failed.");
+  }
+};
