@@ -1,6 +1,7 @@
 {
-  "rewrites": [
-    { "source": "/owner", "destination": "/owner.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/owner", "dest": "/owner.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
